@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.messages import constants
+import re
 from django.contrib.auth import authenticate, login, logout
 
 def cadastro(request):
@@ -27,6 +28,18 @@ def cadastro(request):
         
         if len(senha) < 6:
             messages.add_message(request, constants.INFO, 'Sua senha deve possuir mais de seis digitos!')
+            return redirect('/usuarios/cadastro')
+        
+        if not re.search("[a-z]", senha):
+            messages.add_message(request, constants.WARNING,"Sua senha deve possuir letras minusculas!")
+            return redirect('/usuarios/cadastro')
+        
+        if not re.search("[A-Z]", senha):
+            messages.add_message(request, constants.WARNING,"Sua senha deve possuir letras maiusculas!")
+            return redirect('/usuarios/cadastro')
+        
+        if not re.search("[!@#$&*_]", senha):
+            messages.add_message(request, constants.WARNING,"Sua senha deve possuir caracteres especiais!")
             return redirect('/usuarios/cadastro')
         
         if pessoa.exists():
@@ -72,4 +85,8 @@ def logar(request):
         else:
             messages.add_message(request, constants.ERROR, 'Usuario ou senha inválidos')
             return redirect('/usuarios/login')
+        
+def sair(request):
+    logout(request)
+    return redirect('/usuarios/login')
 
