@@ -37,13 +37,16 @@
                                 {% endfor %}
                             </select>
                         </td>
+                        <br>
+                        <br>
                         <td>
                          
-                            <a href=""  class="btn btn-danger {% if not pedidos.agendado %} disabled {% endif %}">Cancelar</a>
+                            <a href="{% url 'cancelar_pedido' pedidos.id %}"  class="btn btn-danger {% if not pedidos.agendado %} disabled {% endif %}">Cancelar</a>
                         </td>
-                    </tr
+                    </tr>
                 {% endfor %}
-            </table>
+               
+              </table>
         </div>
 
     </div>
