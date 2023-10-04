@@ -72,3 +72,14 @@ def gerenciar_exames(request):
     exames = SolicitacaoExame.objects.filter(usuario=request.user)
 
     return render(request, 'gerenciar_exames.html', {'exames': exames})
+
+@login_required
+def permitir_abrir_exame(request, exame_id):
+    exame = SolicitacaoExame.objects.get(id=exame_id)
+		#TODO: validar se o exame é do usuário
+    if not exame.requer_senha:
+        # verificar se o pdf existe
+        return redirect(exame.resultado.url)
+
+    else: 
+        return redirect(f'/exames/solicitar_senha_exame/{exame.id}')
